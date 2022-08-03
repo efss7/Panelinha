@@ -1,9 +1,9 @@
 {
-    "pessoas":[
+    "people":[
         {
             "id":1,
-            "nome":"Eric",
-            "sobrenome":"Silva"
+            "name":"Eric",
+            "last_name":"Silva"
         }
     ]
 }
