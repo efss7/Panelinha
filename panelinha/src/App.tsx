@@ -7,11 +7,11 @@ export const App = () => {
   return (
     <AppThemeProvider>
       <DrawerProvider>
-      <BrowserRouter>
-        <MenuSide>
-          <AppRoutes />
-        </MenuSide>
-      </BrowserRouter>
+        <BrowserRouter>
+          <MenuSide>
+            <AppRoutes />
+          </MenuSide>
+        </BrowserRouter>
       </DrawerProvider>
     </AppThemeProvider>
   );
