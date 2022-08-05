@@ -1,18 +1,6 @@
 {
   "pessoas": [
     {
-      "id": 3,
-      "nomeCompleto": "Eduardo Osiro",
-      "email": "eduardo@gmail.com",
-      "cidadeId": 1
-    },
-    {
-      "id": 4,
-      "email": "adeire@gmail.com",
-      "cidadeId": 1,
-      "nomeCompleto": "Adeir Moreira"
-    },
-    {
       "id": 1,
       "email": "eric@gmail.com",
       "cidadeId": 1,
@@ -73,12 +61,6 @@
       "id": 6
     },
     {
-      "id": 7,
-      "nomeCompleto": "Joana",
-      "email": "",
-      "cidadeId": ""
-    },
-    {
       "nomeCompleto": "Maicon",
       "email": "maik@dev.com",
       "cidadeId": "1",
@@ -103,10 +85,32 @@
       "id": 11
     },
     {
-      "id": 12,
-      "nomeCompleto": "Manoel",
-      "email": "manel@dev.com",
-      "cidadeId": 1
+      "nomeCompleto": "Ronaldo",
+      "email": "fenomeno@dev.com",
+      "cidadeId": 1,
+      "id": 12
+    }
+  ],
+  "cidades": [
+    {
+      "nome": "Campo Alegre de Lourdes ",
+      "id": 1
+    },
+    {
+      "nome": "Petrolina",
+      "id": 2
+    },
+    {
+      "id": 3,
+      "nome": "São Raimundo Nonato"
+    },
+    {
+      "nome": "Salgueiro",
+      "id": 4
+    },
+    {
+      "nome": "Recife",
+      "id": 5
     }
   ]
 }

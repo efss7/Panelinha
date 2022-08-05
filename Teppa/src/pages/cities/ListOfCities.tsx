@@ -18,17 +18,17 @@ import { ListingTools } from "../../shared/components";
 import { useDeBouce } from "../../shared/hooks";
 import { LayoutBasePage } from "../../shared/layouts";
 import {
-  IPeopleListing,
-  PeopleService,
-} from "../../shared/services/api/people/PeopleServices";
+  ICitiesListing,
+  CitiesService,
+} from "../../shared/services/api/cities/CitiesServices";
 import { Environment } from "../../shared/environment";
 
-export const ListOfPeople: React.FC = () => {
+export const ListOfCities: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { debounce } = useDeBouce();
   const navigate = useNavigate();
 
-  const [rows, setRows] = useState<IPeopleListing[]>([]);
+  const [rows, setRows] = useState<ICitiesListing[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
 
@@ -44,7 +44,7 @@ export const ListOfPeople: React.FC = () => {
     setIsLoading(true);
 
     debounce(() => {
-      PeopleService.getAll(page, search).then((result) => {
+      CitiesService.getAll(page, search).then((result) => {
         setIsLoading(false);
 
         if (result instanceof Error) {
@@ -60,7 +60,7 @@ export const ListOfPeople: React.FC = () => {
 
   const handleDelete = (id: number) => {
     if (confirm('Realmente deseja apagar?')) {
-      PeopleService.deleteById(id)
+      CitiesService.deleteById(id)
         .then(
           result => {
           // if (result instanceof Error) {
@@ -77,13 +77,13 @@ export const ListOfPeople: React.FC = () => {
 
   return (
     <LayoutBasePage
-      tittle="Listagem de pessoas"
+      tittle="Listagem de cidades"
       listingTools={
         <ListingTools
           showInputSearch
           textNewButton="Nova"
           searchText={searchParams.get("busca") ?? ""}
-          whenClickingOnNew = {() => navigate('/pessoas/detalhe/nova')}
+          whenClickingOnNew = {() => navigate('/cidades/detalhe/nova')}
           whenChangingSearchText={
             (newText) =>
               setSearchParams({ busca: newText, page: "1" }, { replace: true }) //alterar para busca
@@ -100,8 +100,7 @@ export const ListOfPeople: React.FC = () => {
           <TableHead>
             <TableRow>
               <TableCell width={100} >Ações</TableCell>
-              <TableCell>Nome Completo</TableCell>
-              <TableCell>E-mail</TableCell>
+              <TableCell>Nome</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -111,12 +110,11 @@ export const ListOfPeople: React.FC = () => {
                 <IconButton size="small" onClick={() => handleDelete(row.id)}>
                     <Icon>delete</Icon>
                   </IconButton>
-                  <IconButton size="small" onClick={()=>navigate(`/pessoas/detalhe/${row.id}`)}>
+                  <IconButton size="small" onClick={()=>navigate(`/cidades/detalhe/${row.id}`)}>
                     <Icon>edit</Icon>
                   </IconButton>
                 </TableCell>
-                <TableCell>{row.nomeCompleto}</TableCell>
-                <TableCell>{row.email}</TableCell>
+                <TableCell>{row.nome}</TableCell>
               </TableRow>
             ))}
           </TableBody>

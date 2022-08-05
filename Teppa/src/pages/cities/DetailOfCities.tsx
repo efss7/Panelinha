@@ -10,21 +10,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import { DetailTools } from "../../shared/components";
 import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
 import { LayoutBasePage } from "../../shared/layouts";
-import { PeopleService } from "../../shared/services/api/people/PeopleServices";
+import { CitiesService } from "../../shared/services/api/cities/CitiesServices";
 import * as yup from "yup"
 
 interface IFormData {
-  email: string;
-  cidadeId: number;
-  nomeCompleto: string;
+  nome:string
 }
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
-  cidadeId: yup.number().required(),
-  email: yup.string().required().email(),
-  nomeCompleto: yup.string().required().min(3)
+  nome: yup.string().required().min(3)
 })
 
-export const DetailOfPeoples: React.FC = () => {
+export const DetailOfCities: React.FC = () => {
   const { id = "nova" } = useParams<"id">();
   const navigate = useNavigate();
   const {formRef, save, saveAndClose, isSaveAndClose} = useVForm();
@@ -33,21 +29,19 @@ export const DetailOfPeoples: React.FC = () => {
 
   useEffect(() => {
     if (id !== "nova") {
-      PeopleService.getById(Number(id)).then((result) => {
+      CitiesService.getById(Number(id)).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           alert(result.message);
-          navigate("/pessoas");
+          navigate("/cidades");
         } else {
-          setName(result.nomeCompleto);
+          setName(result.nome);
           formRef.current?.setData(result);
         }
       });
     }else{
       formRef.current?.setData({
-        email:"",
-        cidadeId:"",
-        nomeCompleto:""
+        nome:""
       })
     }
   }, [id]);
@@ -57,14 +51,14 @@ export const DetailOfPeoples: React.FC = () => {
     .then((dicesValidated)=>{
       setIsLoading(true);
     
-      if(dices.nomeCompleto.length < 3){
-        formRef.current?.setFieldError("nomeCompleto", "O campo precisa ser preenchido")
+      if(dices.nome.length < 3){
+        formRef.current?.setFieldError("nome", "O campo precisa ser preenchido")
         setIsLoading(false)
         return
       }
   
       if (id === 'nova') {
-        PeopleService
+        CitiesService
           .create(dicesValidated)
           .then((result) => {
             setIsLoading(false);
@@ -73,21 +67,21 @@ export const DetailOfPeoples: React.FC = () => {
               alert(result.message);
             } else {
               if (isSaveAndClose()) {
-                navigate("/pessoas")
+                navigate("/cidades")
               } else {
-                 navigate(`/pessoas/detalhe/${result}`);
+                 navigate(`/cidades/detalhe/${result}`);
               }
             }
           });
       } else {
-        PeopleService
+        CitiesService
           .updateById(Number(id), { id: Number(id), ...dicesValidated })
           .then((result) => {
             setIsLoading(false);
-     
               if (isSaveAndClose()) {
-                navigate("/pessoas")
+                navigate("/cidades")
               }
+            
           });
       }
 
@@ -103,16 +97,16 @@ export const DetailOfPeoples: React.FC = () => {
   };
   const handleDelete = (id: number) => {
     if (confirm("Realmente deseja apagar?")) {
-      PeopleService.deleteById(id).then((result) => {
+      CitiesService.deleteById(id).then((result) => {
         alert("Registro apagado com sucesso!");
-        navigate("/pessoas");
+        navigate("/cidades");
       });
     }
   };
 
   return (
     <LayoutBasePage
-      tittle={id === "nova" ? "Nova pessoa" : name}
+      tittle={id === "nova" ? "Nova cidade" : name}
       listingTools={
         <DetailTools
           textNewButton="Nova"
@@ -122,9 +116,9 @@ export const DetailOfPeoples: React.FC = () => {
 
           whenClickingOnSave={save}
           whenClickingOnSaveAndClose={saveAndClose}
-          whenClickingOnBack={() => navigate("/pessoas")}
+          whenClickingOnBack={() => navigate("/cidades")}
           whenClickingOnDelete={() => handleDelete(Number(id))}
-          whenClickingOnNew={() => navigate("/pessoas/detalhe/nova")}
+          whenClickingOnNew={() => navigate("/cidades/detalhe/nova")}
         />
       }
     >
@@ -147,36 +141,13 @@ export const DetailOfPeoples: React.FC = () => {
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <VTextField
                   fullWidth
-                  name='nomeCompleto'
+                  name='nome'
                   disabled={isLoading}
-                  label='Nome completo'
+                  label='Nome'
                   onChange={e => setName(e.target.value)}
                 />
               </Grid>
             </Grid>
-
-            <Grid container item direction="row" spacing={2}>
-              <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
-                <VTextField
-                  fullWidth
-                  name='email'
-                  label='Email'
-                  disabled={isLoading}
-                />
-              </Grid>
-            </Grid>
-
-            <Grid container item direction="row" spacing={2}>
-              <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
-                <VTextField
-                  fullWidth
-                  label='Cidade'
-                  name='cidadeId'
-                  disabled={isLoading}
-                />
-              </Grid>
-            </Grid>
-
           </Grid>
 
         </Box>
