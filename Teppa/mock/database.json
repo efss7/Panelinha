@@ -101,6 +101,12 @@
       "email": "tronix@dev.com",
       "cidadeId": "1",
       "id": 11
+    },
+    {
+      "id": 12,
+      "nomeCompleto": "Manoel",
+      "email": "manel@dev.com",
+      "cidadeId": 1
     }
   ]
 }

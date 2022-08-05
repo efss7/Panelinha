@@ -13,6 +13,7 @@ import { LayoutBasePage } from "../../shared/layouts";
 import { PeopleService } from "../../shared/services/api/people/PeopleServices";
 import * as yup from "yup"
 import { ErrorSharp, Minimize } from "@mui/icons-material";
+import { number } from "yup/lib/locale";
 
 interface IFormData {
   email: string;
