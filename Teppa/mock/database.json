@@ -95,6 +95,12 @@
       "email": "eduardo@gmail.com",
       "cidadeId": 1,
       "id": 10
+    },
+    {
+      "nomeCompleto": "Mariana",
+      "email": "tronix@dev.com",
+      "cidadeId": "1",
+      "id": 11
     }
   ]
 }

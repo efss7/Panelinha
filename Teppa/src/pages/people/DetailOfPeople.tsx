@@ -3,28 +3,32 @@ import {
   Grid,
   LinearProgress,
   Paper,
-  TextField,
   Typography,
 } from "@mui/material";
-import { FormHandles } from "@unform/core";
-import { Form } from "@unform/web";
-import { useEffect, useRef, useState } from "react";
+import { useEffect,useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { DetailTools } from "../../shared/components";
-import { VTextField } from "../../shared/forms";
+import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
 import { LayoutBasePage } from "../../shared/layouts";
 import { PeopleService } from "../../shared/services/api/people/PeopleServices";
+import * as yup from "yup"
+import { ErrorSharp, Minimize } from "@mui/icons-material";
 
 interface IFormData {
   email: string;
   cidadeId: number;
   nomeCompleto: string;
 }
+const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
+  cidadeId: yup.number().required(),
+  email: yup.string().required().email(),
+  nomeCompleto: yup.string().required().min(3)
+})
 
 export const DetailOfPeoples: React.FC = () => {
   const { id = "nova" } = useParams<"id">();
   const navigate = useNavigate();
-  const formRef = useRef<FormHandles>(null);
+  const {formRef, save, saveAndClose, isSaveAndClose} = useVForm();
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState("");
 
@@ -49,32 +53,58 @@ export const DetailOfPeoples: React.FC = () => {
     }
   }, [id]);
 
-  const handleSave = (dados: IFormData) => {
-    setIsLoading(true);
+  const handleSave = (dices: IFormData) => {
+    formValidationSchema.validate(dices, {abortEarly: false})
+    .then((dicesValidated)=>{
+      setIsLoading(true);
+    
+      if(dices.nomeCompleto.length < 3){
+        formRef.current?.setFieldError("nomeCompleto", "O campo precisa ser preenchido")
+        setIsLoading(false)
+        return
+      }
+  
+      if (id === 'nova') {
+        PeopleService
+          .create(dicesValidated)
+          .then((result) => {
+            setIsLoading(false);
+  
+            if (result instanceof Error) {
+              alert(result.message);
+            } else {
+              if (isSaveAndClose()) {
+                navigate("pessoa")
+              } else {
+                 navigate(`/pessoas/detalhe/${result}`);
+              }
+            }
+          });
+      } else {
+        PeopleService
+          .updateById(Number(id), { id: Number(id), ...dicesValidated })
+          .then((result) => {
+            setIsLoading(false);
+  
+            if (result instanceof Error) {
+              alert(result.message);
+            }else{
+              if (isSaveAndClose()) {
+                navigate("pessoa")
+              }
+            }
+          });
+      }
 
-    if (id === 'nova') {
-      PeopleService
-        .create(dados)
-        .then((result) => {
-          setIsLoading(false);
-
-          if (result instanceof Error) {
-            alert(result.message);
-          } else {
-            navigate(`/pessoas/detalhe/${result}`);
-          }
-        });
-    } else {
-      PeopleService
-        .updateById(Number(id), { id: Number(id), ...dados })
-        .then((result) => {
-          setIsLoading(false);
-
-          if (result instanceof Error) {
-            alert(result.message);
-          }
-        });
-    }
+    })
+    .catch((errors:yup.ValidationError)=>{
+      const validationErrors: IVFormErrors ={}
+      errors.inner.forEach(error=>{
+        if(!error.path) return
+        validationErrors[error.path] = error.message
+      })
+        formRef.current?.setErrors(validationErrors);
+    })
   };
   const handleDelete = (id: number) => {
     if (confirm("Realmente deseja apagar?")) {
@@ -94,15 +124,16 @@ export const DetailOfPeoples: React.FC = () => {
           showSaveAndCloseButton
           showNewButton={id !== "nova"}
           showDeleteButton={id !== "nova"}
+
+          whenClickingOnSave={save}
+          whenClickingOnSaveAndClose={saveAndClose}
           whenClickingOnBack={() => navigate("/pessoas")}
           whenClickingOnDelete={() => handleDelete(Number(id))}
           whenClickingOnNew={() => navigate("/pessoas/detalhe/nova")}
-          whenClickingOnSave={() => formRef.current?.submitForm()}
-          whenClickingOnSaveAndClose={() => formRef.current?.submitForm()}
         />
       }
     >
-      <Form ref={formRef} onSubmit={handleSave}>
+      <VForm ref={formRef} onSubmit={handleSave}>
         <Box margin={1} display="flex" flexDirection="column" component={Paper} variant="outlined">
 
           <Grid container direction="column" padding={2} spacing={2}>
@@ -154,7 +185,7 @@ export const DetailOfPeoples: React.FC = () => {
           </Grid>
 
         </Box>
-      </Form>
+      </VForm>
     </LayoutBasePage>
   );
 };
