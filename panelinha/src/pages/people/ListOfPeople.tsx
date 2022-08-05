@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import {
+  Icon,
+  IconButton,
   LinearProgress,
+  Pagination,
   Paper,
   Table,
   TableBody,
@@ -10,7 +13,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ListingTools } from "../../shared/components";
 import { useDeBouce } from "../../shared/hooks";
 import { LayoutBasePage } from "../../shared/layouts";
@@ -23,6 +26,7 @@ import { Environment } from "../../shared/environment";
 export const ListOfPeople: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { debounce } = useDeBouce();
+  const navigate = useNavigate();
 
   const [rows, setRows] = useState<IPeopleListing[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,11 +36,15 @@ export const ListOfPeople: React.FC = () => {
     return searchParams.get("busca") || "";
   }, [searchParams]);
 
+  const page = useMemo(() => {
+    return Number(searchParams.get("page") || "1");
+  }, [searchParams]);
+
   useEffect(() => {
     setIsLoading(true);
 
     debounce(() => {
-      PeopleService.getAll(1, search).then((result) => {
+      PeopleService.getAll(page, search).then((result) => {
         setIsLoading(false);
 
         if (result instanceof Error) {
@@ -48,7 +56,24 @@ export const ListOfPeople: React.FC = () => {
         }
       });
     });
-  }, [search]);
+  }, [search, page]);
+
+  const handleDelete = (id: number) => {
+    if (confirm('Realmente deseja apagar?')) {
+      PeopleService.deleteById(id)
+        .then(
+          result => {
+          // if (result instanceof Error) {
+          //   alert(result.message);
+          // } else {
+            setRows(oldRows => [
+              ...oldRows.filter(oldRow => oldRow.id !== id),
+            ]);
+            alert('Registro apagado com sucesso!');
+          // }
+        });
+    }
+  };
 
   return (
     <LayoutBasePage
@@ -58,8 +83,10 @@ export const ListOfPeople: React.FC = () => {
           showInputSearch
           textNewButton="Nova"
           searchText={searchParams.get("busca") ?? ""}
-          whenChangingSearchText={(newText) =>
-            setSearchParams({ busca: newText }, { replace: true })
+          whenClickingOnNew = {() => navigate('/pessoas/detalhe/nova')}
+          whenChangingSearchText={
+            (newText) =>
+              setSearchParams({ busca: newText, page: "1" }, { replace: true }) //alterar para busca
           }
         />
       }
@@ -80,22 +107,45 @@ export const ListOfPeople: React.FC = () => {
           <TableBody>
             {rows.map((row) => (
               <TableRow key={row.id}>
-                <TableCell>Ações</TableCell>
+                <TableCell>
+                <IconButton size="small" onClick={() => handleDelete(row.id)}>
+                    <Icon>delete</Icon>
+                  </IconButton>
+                  <IconButton size="small" onClick={()=>navigate(`/pessoas/detalhe/${row.id}`)}>
+                    <Icon>edit</Icon>
+                  </IconButton>
+                </TableCell>
                 <TableCell>{row.nomeCompleto}</TableCell>
                 <TableCell>{row.email}</TableCell>
               </TableRow>
             ))}
           </TableBody>
 
-              {totalCount === 0 && !isLoading &&(
-              <caption>{Environment.EMPTY_LOSS}</caption>
-              )}
+          {totalCount === 0 && !isLoading && (
+            <caption>{Environment.EMPTY_LOSS}</caption>
+          )}
 
           <TableFooter>
             {isLoading && (
               <TableRow>
                 <TableCell colSpan={3}>
                   <LinearProgress variant="indeterminate" />
+                </TableCell>
+              </TableRow>
+            )}
+            {totalCount > 0 && totalCount > Environment.LIMITS_OF_LINES && (
+              <TableRow>
+                <TableCell colSpan={3}>
+                  <Pagination
+                    page={page}
+                    count={Math.ceil(totalCount / Environment.LIMITS_OF_LINES)}
+                    onChange={(_, newPage) =>
+                      setSearchParams(
+                        { search, page: newPage.toString() },
+                        { replace: true }
+                      )
+                    }
+                  />
                 </TableCell>
               </TableRow>
             )}
