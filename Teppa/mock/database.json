@@ -129,6 +129,13 @@
     {
       "nome": "Recife",
       "id": 5
+    },
+    {
+      "nome": "Teresina",
+      "id": 6
     }
-  ]
+  ],
+  "auth": {
+    "accessToken": "qqqqq.wwwww.eeeee.rrrrr.ttttt.yyyyy"
+  }
 }
