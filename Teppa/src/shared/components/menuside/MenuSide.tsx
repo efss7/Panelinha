@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
-import { useAppThemeContext, useDrawerContext } from "../contexts";
+import { useAppThemeContext, useAuthContext, useDrawerContext } from "../../contexts";
 interface IAppThemeProviderProps {
   children: React.ReactNode;
 }
@@ -52,6 +52,8 @@ export const MenuSide: React.FC<IAppThemeProviderProps> = ({ children }) => {
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
   const { toggleTheme } = useAppThemeContext();
+  const { logout } = useAuthContext();
+
   return (
     <>
       <Drawer
@@ -98,6 +100,12 @@ export const MenuSide: React.FC<IAppThemeProviderProps> = ({ children }) => {
                   <Icon>dark_mode</Icon>
                 </ListItemIcon>
                 <ListItemText primary="Alternar tema" />
+              </ListItemButton>
+              <ListItemButton  onClick={logout}>
+                <ListItemIcon>
+                  <Icon>logout</Icon>
+                </ListItemIcon>
+                <ListItemText primary="Sair" />
               </ListItemButton>
             </List>
           </Box>
