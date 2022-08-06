@@ -12,6 +12,8 @@ import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
 import { LayoutBasePage } from "../../shared/layouts";
 import { PeopleService } from "../../shared/services/api/people/PeopleServices";
 import * as yup from "yup"
+import { AutoCompleteCities } from "./components/AutoCompleteCities";
+
 
 interface IFormData {
   email: string;
@@ -46,7 +48,7 @@ export const DetailOfPeoples: React.FC = () => {
     }else{
       formRef.current?.setData({
         email:"",
-        cidadeId:"",
+        cidadeId:undefined,
         nomeCompleto:""
       })
     }
@@ -98,6 +100,7 @@ export const DetailOfPeoples: React.FC = () => {
         if(!error.path) return
         validationErrors[error.path] = error.message
       })
+        console.log(validationErrors                                   )
         formRef.current?.setErrors(validationErrors);
     })
   };
@@ -168,12 +171,7 @@ export const DetailOfPeoples: React.FC = () => {
 
             <Grid container item direction="row" spacing={2}>
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
-                <VTextField
-                  fullWidth
-                  label='Cidade'
-                  name='cidadeId'
-                  disabled={isLoading}
-                />
+                <AutoCompleteCities isExternalLoading={isLoading}/>
               </Grid>
             </Grid>
 

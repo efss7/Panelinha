@@ -1,3 +1,3 @@
-export * from "./menu-side/MenuSide";
-export * from "./listing-tools/ListingTools";
-export * from "./detail-tools/DetailTools"
+export * from "./MenuSide";
+export * from "./ListingTools";
+export * from "./DetailTools"

@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ListingTools } from "../../shared/components";
-import { useDeBouce } from "../../shared/hooks";
+import { useDeBounce } from "../../shared/hooks";
 import { LayoutBasePage } from "../../shared/layouts";
 import {
   IPeopleListing,
@@ -25,7 +25,7 @@ import { Environment } from "../../shared/environment";
 
 export const ListOfPeople: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { debounce } = useDeBouce();
+  const { debounce } = useDeBounce();
   const navigate = useNavigate();
 
   const [rows, setRows] = useState<IPeopleListing[]>([]);

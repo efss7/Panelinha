@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
-import { useAppThemeContext, useDrawerContext } from "../../contexts";
+import { useAppThemeContext, useDrawerContext } from "../contexts";
 interface IAppThemeProviderProps {
   children: React.ReactNode;
 }

@@ -89,6 +89,24 @@
       "email": "fenomeno@dev.com",
       "cidadeId": 1,
       "id": 12
+    },
+    {
+      "nomeCompleto": "Eric Felipe",
+      "email": "ericfelipess07@gmail.com",
+      "cidadeId": 1,
+      "id": 13
+    },
+    {
+      "id": 14,
+      "nomeCompleto": "Maria",
+      "email": "thronix@gmail.com",
+      "cidadeId": 5
+    },
+    {
+      "id": 15,
+      "nomeCompleto": "Mariana",
+      "email": "mariana@dev.com",
+      "cidadeId": 5
     }
   ],
   "cidades": [
