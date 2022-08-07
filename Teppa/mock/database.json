@@ -107,6 +107,12 @@
       "nomeCompleto": "Mariana",
       "email": "mariana@dev.com",
       "cidadeId": 5
+    },
+    {
+      "nomeCompleto": "Sanovis Santos",
+      "email": "sanotis@dev.com",
+      "cidadeId": 5,
+      "id": 16
     }
   ],
   "cidades": [
@@ -133,6 +139,10 @@
     {
       "nome": "Teresina",
       "id": 6
+    },
+    {
+      "id": 7,
+      "nome": "Salvador"
     }
   ],
   "auth": {

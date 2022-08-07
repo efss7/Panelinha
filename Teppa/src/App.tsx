@@ -1,15 +1,14 @@
 import { BrowserRouter } from "react-router-dom";
 import "./shared/forms/TranslationsYup"
 import { AppRoutes } from "./routes";
-import { Login, MenuSide } from "./shared/components";
-import { AppThemeProvider, AuthProvider, DrawerProvider } from "./shared/contexts";
+import {  MenuSide } from "./shared/components";
+import { AppThemeProvider,  DrawerProvider } from "./shared/contexts";
 
 export const App = () => {
   return (
-    <AuthProvider>
     <AppThemeProvider>
       
-      <Login>
+
 
       <DrawerProvider>
         <BrowserRouter>
@@ -21,9 +20,8 @@ export const App = () => {
         </BrowserRouter>
       </DrawerProvider>
 
-      </Login>
+
 
     </AppThemeProvider>
-    </AuthProvider>
   );
 };
