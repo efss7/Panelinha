@@ -5,7 +5,7 @@ import BaseDatabase from "./BaseDatabase";
 const TABLE = "teppa_cities"
 
 export class CitiesData extends BaseDatabase {
-    insertCities = async (inputs: InputsCities): Promise<void> => {
+    insert = async (inputs: InputsCities): Promise<void> => {
         try {
             await BaseDatabase.connection(TABLE)
                 .insert(inputs)
@@ -13,7 +13,7 @@ export class CitiesData extends BaseDatabase {
             throw new CustomError(500, error.sqlMessage);
         }
     }
-    selectCities = async (): Promise<void> => {
+    select = async (): Promise<void> => {
         try {
             await BaseDatabase.connection(TABLE)
                 .select("*")
@@ -21,7 +21,7 @@ export class CitiesData extends BaseDatabase {
             throw new CustomError(500, error.sqlMessage);
         }
     }
-    updateCities = async (input: CitiesDTO): Promise<void> => {
+    update = async (input: CitiesDTO): Promise<void> => {
         try {
             await BaseDatabase.connection(TABLE)
                 .update({
@@ -33,7 +33,7 @@ export class CitiesData extends BaseDatabase {
             throw new CustomError(500, error.sqlMessage);
         }
     }
-    deleteCities = async (id: string): Promise<void> => {
+    delete = async (id: string): Promise<void> => {
         try {
             await BaseDatabase.connection(TABLE)
             .where({id})
