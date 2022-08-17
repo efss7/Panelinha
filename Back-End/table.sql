@@ -9,7 +9,7 @@ CREATE TABLE teppa_cities(
 CREATE TABLE teppa_people(  
     id VARCHAR(255) NOT NULL PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
-    cityId VARCHAR(255) NOT NULL,
     fullName VARCHAR(255) NOT NULL,
+    cityId VARCHAR(255) NOT NULL,
     FOREIGN KEY(cityId) REFERENCES `teppa_cities`(id)
 )

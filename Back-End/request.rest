@@ -1,2 +1,27 @@
+POST http://localhost:3003/cities/insert
+Content-Type: application/json
 
+{
+    "state":"Bahia",
+    "city":"Salvador"
+}
+
+###
+
+GET http://localhost:3003/cities/select
+Content-Type: application/json
+
+###
+PUT http://localhost:3003/cities/update/acb392cc-2c92-479e-814f-fef4e473c51d
+Content-Type: application/json
+
+{
+    "state":"Paiuí",
+    "city":"Teresina"
+}
+
+###
+
+DELETE http://localhost:3003/cities/delete/acb392cc-2c92-479e-814f-fef4e473c51d
+Content-Type: application/json
 
