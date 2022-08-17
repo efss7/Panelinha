@@ -13,9 +13,9 @@ export class CitiesData extends BaseDatabase {
             throw new CustomError(500, error.sqlMessage);
         }
     }
-    select = async (): Promise<void> => {
+    select = async (): Promise<CitiesDTO[]> => {
         try {
-            await BaseDatabase.connection(TABLE)
+            return BaseDatabase.connection(TABLE)
                 .select("*")
         } catch (error: any) {
             throw new CustomError(500, error.sqlMessage);
