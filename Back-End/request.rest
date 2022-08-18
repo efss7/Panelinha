@@ -25,3 +25,34 @@ Content-Type: application/json
 DELETE http://localhost:3003/cities/delete/acb392cc-2c92-479e-814f-fef4e473c51d
 Content-Type: application/json
 
+###
+
+POST http://localhost:3003/people/insert
+Content-Type: application/json
+
+{
+    "email":"eric@dev.com",
+    "fullName": "Eric Felipe",
+    "cityId":"d69a986a-1bdd-4920-b229-1db6fde13a44"
+}
+
+###
+
+GET http://localhost:3003/people/select
+Content-Type: application/json
+
+###
+PUT http://localhost:3003/people/update/28cbc6be-017a-40a2-8045-97ec465d707c
+Content-Type: application/json
+
+{
+    "email":"ericfelipe@dev.com",
+    "fullName": "Eric Felipe",
+    "cityId":"d69a986a-1bdd-4920-b229-1db6fde13a44"
+}
+
+###
+
+DELETE http://localhost:3003/people/delete/8a8e83c8-663a-434c-8133-f968d518ec8e
+Content-Type: application/json
+

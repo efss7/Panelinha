@@ -27,6 +27,7 @@ export class PeopleBusiness {
                 fullName,
                 cityId
             }
+            await this.peopleData.insert(dicesOfPeople)
         } catch (error: any) {
             throw new CustomError(error.statusCode, error.message);
         }

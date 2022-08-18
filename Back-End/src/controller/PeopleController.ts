@@ -29,7 +29,7 @@ export class PeopleController {
         const id = req.params.id
         try {
             const inputs: PeopleDTO = {id, email, fullName, cityId }
-            await this.peopleBusiness.update()
+            await this.peopleBusiness.update(inputs)
             res.status(201).send("Pessoa atualizada com sucesso");
         } catch (error:any) {
             res.status(error.statusCode || 400).send({ error: error.message });
