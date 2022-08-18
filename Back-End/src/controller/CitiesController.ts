@@ -28,7 +28,7 @@ export class CitiesController {
         try {
             const inputs: CitiesDTO = { id, state, city }
             await this.citiesBusiness.update(inputs)
-            res.status(201).send("Cidade alterada com sucesso")
+            res.status(201).send("Cidade atualizada com sucesso")
         } catch (error: any) {
             res.status(error.statusCode || 400).send({ error: error.message });
         }
